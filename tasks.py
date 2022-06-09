@@ -1,13 +1,13 @@
 import sys
-import requests
 from datetime import datetime
 from collections import namedtuple
+import requests
 
 headers = {
     "Accept": "application/json",
     "Content-Type": "application/json"
 }
-base_url = "http://localhost:8080/v1/api/tasks"
+BASE_URL = "http://localhost:8080/v1/api/tasks"
 
 Command = namedtuple('Command', ['desc', 'usage', 'example'])
 
@@ -19,6 +19,8 @@ actions = {
 
 
 def process(argv):
+    """To process the user request"""
+
     action = argv[1]
     if action == 'add':
         if len(argv) < 4:
@@ -30,7 +32,7 @@ def process(argv):
                 'summary': summary,
                 'dueDate': due_date
             }
-            res = requests.post(base_url, headers=headers, json=req_body)
+            res = requests.post(BASE_URL, headers=headers, json=req_body)
             if res.status_code == 201:
                 print("Success")
             else:
@@ -38,7 +40,7 @@ def process(argv):
 
     elif action == 'list':
         if len(argv) == 2:
-            res = requests.get(base_url, headers=headers)
+            res = requests.get(BASE_URL, headers=headers)
             if res.status_code == 200:
                 data = res.json()
                 print_tasks(data)
@@ -47,7 +49,7 @@ def process(argv):
         else:
             if argv[2] == '--expiring-today' or argv[2] == '-et':
                 today = datetime.now().strftime("%d/%m/%Y")
-                res = requests.get(base_url + "?dueDate={}".format(today), headers=headers)
+                res = requests.get(BASE_URL + "?dueDate={}".format(today), headers=headers)
                 if res.status_code == 200:
                     data = res.json()
                     print_tasks(data)
@@ -64,7 +66,7 @@ def process(argv):
             req_body = {
                 'action': 'DONE'
             }
-            res = requests.patch(base_url + "/{}".format(task_num), headers=headers, json=req_body)
+            res = requests.patch(BASE_URL + "/{}".format(task_num), headers=headers, json=req_body)
             if res.status_code != 200:
                 print(res.json()['errorMessage'])
             else:
@@ -74,6 +76,8 @@ def process(argv):
 
 
 def print_tasks(data):
+    """To print task detail"""
+
     print("----------------------------------------------------------------")
     print("id\t|\tsummary\t|\tdue date\t|\tstatus")
     for t in data:
