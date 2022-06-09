@@ -34,7 +34,7 @@ def process(argv):
             if res.status_code == 201:
                 print("Success")
             else:
-                print(res.json()['message'])
+                print(res.json()['errorMessage'])
 
     elif action == 'list':
         if len(argv) == 2:
@@ -43,7 +43,7 @@ def process(argv):
                 data = res.json()
                 print_tasks(data)
             else:
-                print(res.json()['message'])
+                print(res.json()['errorMessage'])
         else:
             if argv[2] == '--expiring-today' or argv[2] == '-et':
                 today = datetime.now().strftime("%d/%m/%Y")
@@ -52,7 +52,7 @@ def process(argv):
                     data = res.json()
                     print_tasks(data)
                 else:
-                    print(res.json()['message'])
+                    print(res.json()['errorMessage'])
             else:
                 raise NotImplementedError()
 
@@ -66,7 +66,7 @@ def process(argv):
             }
             res = requests.patch(base_url + "/{}".format(task_num), headers=headers, json=req_body)
             if res.status_code != 200:
-                print(res.json()['message'])
+                print(res.json()['errorMessage'])
             else:
              print("Success")
     else:

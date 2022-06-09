@@ -35,7 +35,7 @@ public class TaskService {
                 date = LocalDate.parse(dueDate.trim(), formatter);
             } catch (DateTimeParseException e) {
                 log.error("Due date {} is invalid", dueDate);
-                throw new RuntimeException("Please input a valid due date!");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please input a valid due date!");
             }
             log.info("Retrieve all tasks that will expire on {}", dueDate);
             tasks = taskRepository.findByDueDate(date);
@@ -58,7 +58,10 @@ public class TaskService {
     public TaskDto inquiryTask(Long id) {
         log.info("Inquiry task {}", id);
         Optional<Task> task = taskRepository.findById(id);
-        task.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task is not found"));
+        task.orElseThrow(() -> {
+            log.error("Task {} is not found", id);
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Task is not found");
+        });
         Task t = task.get();
         return TaskDto.builder()
                 .id(t.getId())
@@ -74,7 +77,7 @@ public class TaskService {
             dueDate = LocalDate.parse(request.getDueDate(), formatter);
         } catch (DateTimeParseException e) {
             log.error("Due date {} is invalid", request.getDueDate());
-            throw new RuntimeException("Please input a valid due date!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please input a valid due date!");
         }
 
         if (dueDate.isBefore(LocalDate.now())) {
@@ -94,7 +97,10 @@ public class TaskService {
     public void updateTask(Long id, UpdateTaskRequest request) {
         log.info("Update task {} with action {}", id, request.getAction());
         Optional<Task> t = taskRepository.findById(id);
-        t.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task is not found"));
+        t.orElseThrow(() -> {
+            log.error("Task {} is not found", id);
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Task is not found");
+        });
 
         Task task = t.get();
         switch (request.getAction()) {

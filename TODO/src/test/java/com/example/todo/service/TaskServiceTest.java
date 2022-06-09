@@ -92,7 +92,7 @@ public class TaskServiceTest {
         Assertions.assertEquals(tasks, taskDtos);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = ResponseStatusException.class)
     public void retrieveAllTasks_invalid_dueDate() {
         List<TaskDto> taskDtos = taskService.retrieveAllTasks("11111");
 
@@ -124,7 +124,7 @@ public class TaskServiceTest {
         Task t = taskService.createTask(createTaskRequest);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = ResponseStatusException.class)
     public void createTask_invalid_dueDate() {
         createTaskRequest.setDueDate("11111");
         Task t = taskService.createTask(createTaskRequest);
