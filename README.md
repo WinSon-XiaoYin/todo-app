@@ -15,17 +15,13 @@ JDK 8, Maven 3, Sprint Boot, H2, Python3
 
 ### How to run this project
 #### 1. Launch backend server
-`cd ./TODO`
+1. `mvn clean`
 
-`mvn clean`
+2. `mvn package`
 
-`mvn package`
-
-`java -jar target/TODO-0.0.1-SNAPSHOT.jar`
+3. `java -jar target/TODO-0.0.1-SNAPSHOT.jar`
 
 #### 2. Command Line Client - Python
-`cd ./client`
-
 Install dependency
 `pip install -r requirements.txt`
 
