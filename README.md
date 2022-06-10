@@ -1,27 +1,27 @@
 ## Simple Task Management System
 This is a simple task management tool.
 
-### Feature
-1. Create TODO task
-2. Retrieve all tasks
-3. Inquiry task details
-4. Update task status (including a simple state machine)
-
-### Prerequisites
-JDK 8, Maven 3, Sprint Boot, H2, Python3
-
 ### Architecture
 ![img.png](architecture.png)
 
+### Restful APIs
+1. `POST /v1/api/tasks`    - _Create TODO task_
+2. `GET /v1/api/tasks` - _Retrieve all tasks_
+3. `GET /v1/api/tasks/{id}` - _Inquiry task details_
+4. `PATCH /v1/api/tasks/{id}` - _Update task status (including a simple state machine inside)_
+
 ### How to run this project
-#### 1. Launch backend server
+#### _**1. Prerequisites**_
+JDK 8, Maven 3, Sprint Boot, H2, Python3
+
+#### _**2. Launch backend server**_
 1. `mvn clean`
 
 2. `mvn package`
 
 3. `java -jar target/TODO-0.0.1-SNAPSHOT.jar`
 
-#### 2. Command Line Client - Python
+#### _**3. Command Line Client - Python**_
 Install dependency
 `pip install -r requirements.txt`
 
@@ -43,9 +43,7 @@ or
 5. Complete task
 `python tasks.py done <task_id>`
 
-
-
-
+   
 ### Simple State Machine for task status
 ![img_1.png](simple_sm.png)
 
