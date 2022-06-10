@@ -1,5 +1,5 @@
 ## Simple Task Management tool
-This is a simple task management tool.
+This is a simple task management tool, and it implemented both client and server services. It uses Java + Spring Boot + H2 Database to provide backend service, all thet tasks will be stored into H2 Database. For the client service, it uses Python to provide command line user interface, then users can manage tasks via executing tasks.py file with parameters.
 
 ### Architecture
 ![img.png](architecture.png)
