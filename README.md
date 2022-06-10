@@ -12,7 +12,7 @@ This is a simple task management tool.
 
 ### How to run this project
 #### _**1. Prerequisites**_
-JDK 8/11, Maven 3, Sprint Boot, H2, Python3
+JDK 8/11, Maven 3, H2 Database, Python3
 
 #### _**2. Launch backend service**_
 1. `mvn clean`
