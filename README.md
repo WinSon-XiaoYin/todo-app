@@ -1,4 +1,4 @@
-## Simple Task Management System
+## Simple Task Management tool
 This is a simple task management tool.
 
 ### Architecture
