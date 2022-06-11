@@ -5,15 +5,19 @@ import com.example.todo.dto.TaskDto;
 import com.example.todo.dto.UpdateTaskRequest;
 import com.example.todo.entity.Task;
 import com.example.todo.service.TaskService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
 
+@Api(tags = "Task Management")
 @RestController
 @RequestMapping("/v1/api")
 public class TaskController {
@@ -21,25 +25,46 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @ApiOperation("List Task")
     @GetMapping("/tasks")
-    public ResponseEntity<List<TaskDto>> retrieveAllTasks(@Nullable @RequestParam String dueDate) {
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "return all the tasks", response = TaskDto.class, responseContainer = "List"),
+            @ApiResponse(code = 400, message = "Please input a valid due date")
+    })
+    public ResponseEntity<List<TaskDto>> retrieveAllTasks(@RequestParam(required = false) String dueDate) {
         return ResponseEntity.ok(taskService.retrieveAllTasks(dueDate));
     }
 
+    @ApiOperation("Inquiry Task")
     @GetMapping("/tasks/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "return task detail", response = TaskDto.class),
+            @ApiResponse(code = 404, message = "Task is not found")
+    })
     public ResponseEntity<TaskDto> inquiryTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.inquiryTask(id));
     }
 
+    @ApiOperation("Create Task")
     @PostMapping("/tasks")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "task is created"),
+            @ApiResponse(code = 400, message = "Please input a valid due date"),
+            @ApiResponse(code = 406, message = "Due date must be later than or equals to today")
+    })
     public ResponseEntity<String> createTask(@RequestBody CreateTaskRequest request) {
         Task task = taskService.createTask(request);
         String newUri = String.format("/v1/api/tasks/%s", task.getId());
         return ResponseEntity.created(URI.create(newUri)).build();
     }
 
-
+    @ApiOperation("Update Task")
     @PatchMapping("/tasks/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "task is updated"),
+            @ApiResponse(code = 404, message = "Task is not found"),
+            @ApiResponse(code = 406, message = "Invalid action for current status")
+    })
     public ResponseEntity<String> updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
         taskService.updateTask(id, request);
         return ResponseEntity.ok().build();
