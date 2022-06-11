@@ -5,6 +5,7 @@ This is a simple task management tool, and it implemented both client and server
 ![img.png](architecture.png)
 
 ### Restful APIs
+Swagger url: `http://localhost:8080/swagger-ui/index.html`
 1. `POST /v1/api/tasks`    - _Create TODO task_
 2. `GET /v1/api/tasks` - _Retrieve all tasks_
 3. `GET /v1/api/tasks/{id}` - _Inquiry task details_
