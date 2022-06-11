@@ -1,7 +1,7 @@
-## Simple Task Management System
-This is a simple task management tool.
+## Simple Task Management tool
+This is a simple task management tool, and it implemented both client and server services. It uses Java + Spring Boot + H2 Database to provide backend service, all thet tasks will be stored into H2 Database. For the client service, it uses Python to provide command line user interface, then users can manage tasks via executing tasks.py file with parameters.
 
-### Architecture
+### High Level Architecture
 ![img.png](architecture.png)
 
 ### Restful APIs
@@ -12,16 +12,16 @@ This is a simple task management tool.
 
 ### How to run this project
 #### _**1. Prerequisites**_
-JDK 8, Maven 3, Sprint Boot, H2, Python3
+JDK 8/11, Maven 3, H2 Database, Python3
 
-#### _**2. Launch backend server**_
+#### _**2. Launch backend service**_
 1. `mvn clean`
 
 2. `mvn package`
 
 3. `java -jar target/TODO-0.0.1-SNAPSHOT.jar`
 
-#### _**3. Command Line Client - Python**_
+#### _**3. Using Command Line Client to interact**_
 Install dependency
 `pip install -r requirements.txt`
 
