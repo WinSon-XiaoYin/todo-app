@@ -22,6 +22,10 @@ JDK 8/11, Maven 3, H2 Database, Python3
 
 3. `java -jar target/TODO-0.0.1-SNAPSHOT.jar`
 
+or executing shell script to start: `./start.sh`
+and pressing Ctrl-C to stop
+
+
 #### _**3. Using Command Line Client to interact**_
 Install dependency
 `pip install -r requirements.txt`
