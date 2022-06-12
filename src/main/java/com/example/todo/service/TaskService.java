@@ -1,16 +1,17 @@
 package com.example.todo.service;
 
+import com.example.todo.Enum.ErrorCode;
 import com.example.todo.Enum.StatusEnum;
 import com.example.todo.dto.CreateTaskRequest;
 import com.example.todo.dto.TaskDto;
 import com.example.todo.dto.UpdateTaskRequest;
 import com.example.todo.entity.Task;
+import com.example.todo.exception.CustomResponseException;
 import com.example.todo.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +36,8 @@ public class TaskService {
                 date = LocalDate.parse(dueDate.trim(), formatter);
             } catch (DateTimeParseException e) {
                 log.error("Due date {} is invalid", dueDate);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please input a valid due date!");
+                throw new CustomResponseException(HttpStatus.BAD_REQUEST, ErrorCode.INVALID_DUE_DATE_FORMAT.getMessage(),
+                        ErrorCode.INVALID_DUE_DATE_FORMAT.getCode());
             }
             log.info("Retrieve all tasks that will expire on {}", dueDate);
             tasks = taskRepository.findByDueDate(date);
@@ -60,7 +62,8 @@ public class TaskService {
         Optional<Task> task = taskRepository.findById(id);
         task.orElseThrow(() -> {
             log.error("Task {} is not found", id);
-            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Task is not found");
+            return new CustomResponseException(HttpStatus.NOT_FOUND, ErrorCode.TASK_NOT_FOUND.getMessage(),
+                    ErrorCode.TASK_NOT_FOUND.getCode());
         });
         Task t = task.get();
         return TaskDto.builder()
@@ -77,12 +80,14 @@ public class TaskService {
             dueDate = LocalDate.parse(request.getDueDate(), formatter);
         } catch (DateTimeParseException e) {
             log.error("Due date {} is invalid", request.getDueDate());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please input a valid due date!");
+            throw new CustomResponseException(HttpStatus.BAD_REQUEST, ErrorCode.INVALID_DUE_DATE_FORMAT.getMessage(),
+                    ErrorCode.INVALID_DUE_DATE_FORMAT.getCode());
         }
 
         if (dueDate.isBefore(LocalDate.now())) {
             log.error("Due date {} must be later than or equals to today", dueDate);
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Due date must be later than or equals to today");
+            throw new CustomResponseException(HttpStatus.BAD_REQUEST, ErrorCode.INVALID_DUE_DATE.getMessage(),
+                    ErrorCode.INVALID_DUE_DATE.getCode());
         }
 
         log.info("Create task {}, and the task will expire on {}", request.getSummary(), request.getDueDate());
@@ -99,7 +104,8 @@ public class TaskService {
         Optional<Task> t = taskRepository.findById(id);
         t.orElseThrow(() -> {
             log.error("Task {} is not found", id);
-            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Task is not found");
+            return new CustomResponseException(HttpStatus.NOT_FOUND, ErrorCode.TASK_NOT_FOUND.getMessage(),
+                    ErrorCode.TASK_NOT_FOUND.getCode());
         });
 
         Task task = t.get();
@@ -114,7 +120,8 @@ public class TaskService {
                 } else {
                     log.error("Invalid action {} on task {}, current status is {}", request.getAction(), id, task.getStatus());
                     // Throw invalid action
-                    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid action for current status");
+                    throw new CustomResponseException(HttpStatus.NOT_FOUND, ErrorCode.UNACCEPTABLE_ACTION.getMessage(),
+                            ErrorCode.UNACCEPTABLE_ACTION.getCode());
                 }
                 break;
             case DONE:
@@ -124,7 +131,8 @@ public class TaskService {
                 } else {
                     log.error("Invalid action {} on task {}, current status is {}", request.getAction(), id, task.getStatus());
                     // Throw invalid action
-                    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid action for current status");
+                    throw new CustomResponseException(HttpStatus.NOT_FOUND, ErrorCode.UNACCEPTABLE_ACTION.getMessage(),
+                            ErrorCode.UNACCEPTABLE_ACTION.getCode());
                 }
                 break;
             case START:
@@ -134,10 +142,12 @@ public class TaskService {
                 } else {
                     log.error("Invalid action {} on task {}, current status is {}", request.getAction(), id, task.getStatus());
                     // Throw invalid action
-                    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid action for current status");
+                    throw new CustomResponseException(HttpStatus.NOT_FOUND, ErrorCode.UNACCEPTABLE_ACTION.getMessage(),
+                            ErrorCode.UNACCEPTABLE_ACTION.getCode());
                 }
                 break;
         }
         taskRepository.save(task);
     }
+
 }
