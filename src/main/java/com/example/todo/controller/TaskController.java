@@ -1,6 +1,7 @@
 package com.example.todo.controller;
 
 import com.example.todo.dto.CreateTaskRequest;
+import com.example.todo.dto.ErrorResponse;
 import com.example.todo.dto.TaskDto;
 import com.example.todo.dto.UpdateTaskRequest;
 import com.example.todo.entity.Task;
@@ -29,7 +30,7 @@ public class TaskController {
     @GetMapping("/tasks")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "return all the tasks", response = TaskDto.class, responseContainer = "List"),
-            @ApiResponse(code = 400, message = "Please input a valid due date")
+            @ApiResponse(code = 400, message = "Please input a valid due date", response = ErrorResponse.class)
     })
     public ResponseEntity<List<TaskDto>> retrieveAllTasks(@RequestParam(required = false) String dueDate) {
         return ResponseEntity.ok(taskService.retrieveAllTasks(dueDate));
@@ -39,7 +40,7 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "return task detail", response = TaskDto.class),
-            @ApiResponse(code = 404, message = "Task is not found")
+            @ApiResponse(code = 404, message = "Task is not found", response = ErrorResponse.class)
     })
     public ResponseEntity<TaskDto> inquiryTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.inquiryTask(id));
@@ -49,8 +50,8 @@ public class TaskController {
     @PostMapping("/tasks")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "task is created"),
-            @ApiResponse(code = 400, message = "Please input a valid due date"),
-            @ApiResponse(code = 406, message = "Due date must be later than or equals to today")
+            @ApiResponse(code = 400, message = "Please input a valid due date", response = ErrorResponse.class),
+            @ApiResponse(code = 406, message = "Due date must be later than or equals to today", response = ErrorResponse.class)
     })
     public ResponseEntity<String> createTask(@RequestBody CreateTaskRequest request) {
         Task task = taskService.createTask(request);
@@ -62,8 +63,8 @@ public class TaskController {
     @PatchMapping("/tasks/{id}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "task is updated"),
-            @ApiResponse(code = 404, message = "Task is not found"),
-            @ApiResponse(code = 406, message = "Invalid action for current status")
+            @ApiResponse(code = 404, message = "Task is not found", response = ErrorResponse.class),
+            @ApiResponse(code = 406, message = "Invalid action for current status", response = ErrorResponse.class)
     })
     public ResponseEntity<String> updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
         taskService.updateTask(id, request);
