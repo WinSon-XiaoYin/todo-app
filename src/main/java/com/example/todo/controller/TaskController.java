@@ -1,9 +1,6 @@
 package com.example.todo.controller;
 
-import com.example.todo.dto.CreateTaskRequest;
-import com.example.todo.dto.ErrorResponse;
-import com.example.todo.dto.TaskDto;
-import com.example.todo.dto.UpdateTaskRequest;
+import com.example.todo.dto.*;
 import com.example.todo.entity.Task;
 import com.example.todo.service.TaskService;
 import io.swagger.annotations.Api;
@@ -11,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,5 +67,10 @@ public class TaskController {
     public ResponseEntity<String> updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
         taskService.updateTask(id, request);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/tasks/list")
+    public Page<Task> taskList(PageParamRequest request) {
+        return taskService.taskList(request);
     }
 }

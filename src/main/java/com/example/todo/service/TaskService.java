@@ -3,13 +3,18 @@ package com.example.todo.service;
 import com.example.todo.Enum.ErrorCode;
 import com.example.todo.Enum.StatusEnum;
 import com.example.todo.dto.CreateTaskRequest;
+import com.example.todo.dto.PageParamRequest;
 import com.example.todo.dto.TaskDto;
 import com.example.todo.dto.UpdateTaskRequest;
 import com.example.todo.entity.Task;
 import com.example.todo.exception.CustomResponseException;
+import com.example.todo.repository.Task1Repository;
 import com.example.todo.repository.TaskRepository;
+import com.example.todo.spec.TaskSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,12 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private Task1Repository task1Repository;
+
+    @Autowired
+    private TaskSpecification taskSpecification;
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -150,4 +161,8 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    public Page<Task> taskList(PageParamRequest request) {
+        PageRequest pageRequest = PageRequest.of(request.getPageNumber(), request.getPageNumber());
+        return task1Repository.findAll(taskSpecification.getTaskSpecification(request), pageRequest);
+    }
 }
