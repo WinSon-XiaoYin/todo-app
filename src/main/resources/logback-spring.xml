@@ -14,7 +14,7 @@
     <!-- ERROR level log -->
     <appender name="ERROR"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logDir}\error.log</file>
+        <file>${logDir}/error.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
@@ -22,7 +22,7 @@
         </filter>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logDir}\%d{yyyyMMdd}\error.%i.log</fileNamePattern>
+            <fileNamePattern>${logDir}/%d{yyyyMMdd}/error.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -40,7 +40,7 @@
     <!-- WARN level log -->
     <appender name="WARN"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logDir}\warn.log</file>
+        <file>${logDir}/warn.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
@@ -48,7 +48,7 @@
         </filter>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logDir}\%d{yyyyMMdd}\warn.%i.log</fileNamePattern>
+            <fileNamePattern>${logDir}/%d{yyyyMMdd}/warn.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -65,7 +65,7 @@
     <!-- INFO level log -->
     <appender name="INFO"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logDir}\info.log</file>
+        <file>${logDir}/info.log</file>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
@@ -73,7 +73,7 @@
         </filter>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logDir}\%d{yyyyMMdd}\info.%i.log</fileNamePattern>
+            <fileNamePattern>${logDir}/%d{yyyyMMdd}/info.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
