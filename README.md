@@ -22,8 +22,13 @@ Ubuntu 18.04, JDK 8/11, Maven 3, H2 Database, Python3
 
 3. `java -jar target/TODO-0.0.1-SNAPSHOT.jar`
 
-or executing shell script to start: `./start.sh`
+Or executing shell script to start: `./start.sh`
 and pressing Ctrl-C to stop
+
+Or using docker:
+1. build image: `docker build -t todo-app:v1.0 .`
+2. launch container: `docker run -v <absolute_path>/logs:/usr/src/myapp/logs -v <absolute_path>/db:/usr/src/myapp/db -p 8080:8080 --name todo-app -d todo-app:v1.0`
+3. stop the container: `docker container stop todo-app`
 
 
 #### _**3. Using Command Line Client to interact**_
