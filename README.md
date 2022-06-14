@@ -52,3 +52,68 @@ or
 ### Simple State Machine for task status
 ![img_1.png](simple_sm.png)
 
+
+### Sequence Diagram
+```mermaid
+sequenceDiagram
+    title: Simple Task Management Tool
+
+    participant User
+    participant Command Line Interface
+    participant Backend Application
+    participant H2 Database
+
+    note right of User: Task creation flow
+    User->>Command Line Interface: creating todo task with task summary and task due date
+    Command Line Interface->>Backend Application: POST /v1/api/tasks to create todo task
+    Backend Application->>Backend Application: due date checking
+    alt if due date format is invalid
+        Backend Application-->>Command Line Interface: return 400 Bad Request with invalid due date format error message
+        Command Line Interface-->>User: show invalid due date format error message
+    else
+        alt if due date is earlier than today
+            Backend Application-->>Command Line Interface: return 406 Not Applicable with task due date must be later than or equals to today error message
+        Command Line Interface-->>User: show task due date must be later than or equals to today error message
+        else
+            Backend Application->>H2 Database: save todo task into DB
+            H2 Database-->>Backend Application: 
+            Backend Application-->>Command Line Interface: return 201 created and task detail url in the header
+            Command Line Interface-->>User: return Success message
+        end
+    end
+    
+
+    
+
+    note right of User: Task list flow
+    User->>Command Line Interface: input command "task list"
+    Command Line Interface->>Backend Application: GET /v1/api/tasks to retrieve all the tasks
+    Backend Application->>H2 Database: get tasks from DB
+    H2 Database-->>Backend Application: 
+    Backend Application-->>Command Line Interface: return 200 and task list
+    Command Line Interface-->>User: show task list
+
+    note right of User: Complete task flow
+    User->>Command Line Interface: input command "done <task_id>"
+    Command Line Interface->>Backend Application: PATCH /v1/api/tasks/<task_id> with action: "DONE" to update task status
+    Backend Application->>H2 Database: get task from DB
+    H2 Database-->>Backend Application: 
+    alt if task is not found
+        Backend Application-->>Command Line Interface: return 404 Task is not found
+        Command Line Interface-->>User: show task is not found error message
+    end
+    Backend Application->>Backend Application: Check whether a valid action for current task
+    alt if invalid action for current task
+        Backend Application-->>Command Line Interface: return 406 Not Applicable
+        Command Line Interface-->>User: show invlid action error message
+    else
+        Backend Application->>H2 Database: update task status to done
+        H2 Database-->>Backend Application: 
+        Backend Application-->>Command Line Interface: return 200
+        Command Line Interface-->>User: show Success message
+    end
+```
+
+
+
+
