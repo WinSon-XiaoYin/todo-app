@@ -50,7 +50,16 @@ or
 
    
 ### Simple State Machine for task status
-![img_1.png](simple_sm.png)
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> TODO: submit task 
+    TODO-->INPROGRESS: start task
+    INPROGRESS-->DONE: complete task
+    DONE-->INPROGRESS: rollback task
+    INPROGRESS-->TODO: rollback task
+    TODO-->DONE: complete task
+```
 
 
 ### Sequence Diagram
