@@ -13,7 +13,7 @@ Swagger url: `http://localhost:8080/swagger-ui/index.html`
 
 ### How to run this project
 #### _**1. Prerequisites**_
-JDK 8/11, Maven 3, H2 Database, Python3
+Ubuntu 18.04, JDK 8/11, Maven 3, H2 Database, Python3
 
 #### _**2. Launch backend service**_
 1. `mvn clean`
@@ -28,25 +28,25 @@ and pressing Ctrl-C to stop
 
 #### _**3. Using Command Line Client to interact**_
 Install dependency
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 *Usage:*
 1. Help
-`python tasks.py -h`
+`python3 tasks.py -h`
 
 2. Add task
-`python tasks.py add <summary> <due_date>`
+`python3 tasks.py add <summary> <due_date>`
 
 3. List all tasks
-`python tasks.py list`
+`python3 tasks.py list`
 
 4. List all tasks that will expire today
-`python tasks.py list --expiring-today`
+`python3 tasks.py list --expiring-today`
 or
-`python tasks.py list -et`
+`python3 tasks.py list -et`
 
 5. Complete task
-`python tasks.py done <task_id>`
+`python3 tasks.py done <task_id>`
 
    
 ### Simple State Machine for task status
